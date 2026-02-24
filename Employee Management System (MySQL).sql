@@ -1,4 +1,4 @@
--- MYSQL_TASK_1 PROJECT
+-- Employee Management System (MySQL) PROJECT
 -- Description: Employee Management System with Constraints, Joins, Views and Indexes
 
 -- 1. Create Database
