@@ -1,15 +1,11 @@
 -- SARAVANA_STORE DATABASE PROJECT
 -- Description: Table Creation, Normalization and Query Practice
 
-
 -- 1. Create database and select it.
-
 CREATE DATABASE Saravana_store;
 USE Saravana_store;
 
-
 -- 2. Create initial Sales_Info table (Denormalized Structure).
-
 CREATE TABLE Sales_Info (
     Product_ID SMALLINT,
     Product_Name VARCHAR(50),
@@ -25,15 +21,11 @@ CREATE TABLE Sales_Info (
     Order_Date DATE
 );
 
-
 -- 3. Modify column datatypes.
-
 ALTER TABLE Sales_Info MODIFY COLUMN Product_ID INT;
 ALTER TABLE Sales_Info MODIFY COLUMN Sales_Rep_id INT;
 
-
 -- 4. Insert sales records.
-
 INSERT INTO Sales_Info VALUES 
 (101,'Shirt',400.00,1002,'ram','ram@gmail.com','+91 9288880000',2,'Jagan','+91 9110300488','Q1','2026-01-13'),
 (100,'T-Shirt',300.00,1002,'ram','ram@gmail.com','+91 9288880000',2,'Jagan','+91 9110300488','Q2','2026-01-13'),
@@ -57,23 +49,17 @@ INSERT INTO Sales_Info VALUES
 (120,'Wallet',600.00,1015,'Naveen','naveen@gmail.com','+91 9887766554',4,'Vijay','+91 9090909090','Q20','2026-02-05'),
 (110,'Jeans',800.00,1003,'Suresh','suresh@gmail.com','+91 9876543210',3,'Mani','+91 9000001234','Q21','2026-02-06');
 
-
 -- 5. Basic verification queries.
-
 SELECT * FROM Sales_Info;
 SELECT * FROM Sales_Info WHERE Product_Price > 300;
 SELECT * FROM Sales_Info WHERE Product_Price % 2 = 0;
 
-
 -- 6. Update example.
-
 UPDATE Sales_Info
 SET Customer_EMAILID = 'suresh007@gmail.com'
 WHERE Customer_ID = 1003;
 
-
 -- 7. Create Customer_info table.
-
 CREATE TABLE Customer_info (
     Customer_ID INT PRIMARY KEY,
     Customer_Name VARCHAR(50),
@@ -81,63 +67,47 @@ CREATE TABLE Customer_info (
     Customer_Mobile_no VARCHAR(15)
 );
 
-
 -- 8. Insert distinct customers.
-
 INSERT INTO Customer_info
 SELECT DISTINCT Customer_ID, Customer_Name, Customer_EMAILID, Customer_Mobile_no
 FROM Sales_Info;
 
-
 -- 9. Create Product_info table.
-
 CREATE TABLE Product_info (
     Product_ID INT PRIMARY KEY,
     Product_Name VARCHAR(50),
     Product_Price DECIMAL(10,2)
 );
 
-
 -- 10. Insert distinct products.
-
 INSERT INTO Product_info
 SELECT DISTINCT Product_ID, Product_Name, Product_Price
 FROM Sales_Info;
 
-
 -- 11. Create Sales_Rep table.
-
 CREATE TABLE Sales_Rep(
     Sales_Rep_id INT PRIMARY KEY,
     Sales_Rep_Name VARCHAR(50),
     Sales_Rep_Mobile_no VARCHAR(15)
 );
 
-
 -- 12. Insert distinct sales representatives.
-
 INSERT INTO Sales_Rep
 SELECT DISTINCT Sales_Rep_id, Sales_Rep_Name, Sales_Rep_Mobile_no
 FROM Sales_Info;
 
-
 -- 13. Create Orders_Info table.
-
 CREATE TABLE Orders_Info (
     Order_ID VARCHAR(5) PRIMARY KEY,
     Order_Date DATE
 );
 
-
 -- 14. Insert distinct orders.
-
 INSERT INTO Orders_Info
 SELECT DISTINCT Order_ID, Order_Date
 FROM Sales_Info;
 
-
 -- 15. Drop redundant columns (Normalization Step).
-
 ALTER TABLE Sales_Info
 DROP COLUMN Product_Name,
 DROP COLUMN Product_Price,
@@ -148,9 +118,7 @@ DROP COLUMN Sales_Rep_Name,
 DROP COLUMN Sales_Rep_Mobile_no,
 DROP COLUMN Order_Date;
 
-
 -- 16. Add foreign key constraints.
-
 ALTER TABLE Sales_Info
 ADD CONSTRAINT fk_product FOREIGN KEY (Product_ID) REFERENCES Product_Info(Product_ID);
 
@@ -163,9 +131,7 @@ ADD CONSTRAINT fk_sales FOREIGN KEY (Sales_Rep_id) REFERENCES Sales_Rep(Sales_Re
 ALTER TABLE Sales_Info
 ADD CONSTRAINT fk_order FOREIGN KEY (Order_ID) REFERENCES Orders_Info(Order_ID);
 
-
 -- 17. Join example.
-
 SELECT S.Customer_ID,
        C.Customer_Name,
        C.Customer_EMAILID
@@ -173,9 +139,7 @@ FROM Sales_Info S
 LEFT JOIN Customer_info C
 ON S.Customer_ID = C.Customer_ID;
 
-
 -- 18. Analytical queries.
-
 SELECT Product_ID AS P_ID,
        Product_Name AS P_NAME,
        Product_Price AS P_PRICE
